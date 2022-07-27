@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RacerInfoController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +18,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/report', [ReportController::class, 'show']);
+
+Route::get('/report/racers', [RacerInfoController::class, 'showAll']);
+
+Route::get('/report/racers/id={id}', [RacerInfoController::class, 'showOne'])
+    ->where('id','[a-zA-Z]{3}');
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
