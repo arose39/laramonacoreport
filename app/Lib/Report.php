@@ -3,17 +3,19 @@
 namespace App\Lib;
 
 
+use App\Lib\SortStrategies\SortStrategyASC;
+use App\Lib\SortStrategies\SortStrategyDESC;
+use App\Lib\SortStrategies\SortStrategyInterface;
+use http\Exception\InvalidArgumentException;
 
 class Report
 {
     private RacersCollection $racersCollection;
     private SortStrategyInterface $sortStrategy;
-    private FormatterInterface $formatter;
 
-    public function __construct(RacersCollection $racersCollection, FormatterInterface $formatter)
+    public function __construct(RacersCollection $racersCollection)
     {
         $this->racersCollection = $racersCollection;
-        $this->formatter = $formatter;
     }
 
     public function build(string $sortOrder)
@@ -22,25 +24,20 @@ class Report
         $i = 0;
         foreach ($this->racersCollection as $racer) {
             $report[$i]['name'] = $racer->getName();
+            $report[$i]['abbreviation'] = $racer->getAbbreviation();
             $report[$i]['team'] = $racer->getTeam();
             $report[$i]['lap_time'] = $racer->getLapTime();
             $i++;
         }
-        if ($sortOrder == "ASC") {
+        if ($sortOrder === "ASC") {
             $this->setSortStrategy(new SortStrategyASC());
-        } elseif ($sortOrder == "DESC") {
+        } elseif ($sortOrder === "DESC") {
             $this->setSortStrategy(new SortStrategyDESC());
         } else {
             throw new InvalidArgumentException("Incorrect argument for sorting, use 'DESC' or 'ASC'");
         }
 
         return $this->sortStrategy->execute($report);
-    }
-
-    public function print(string $sortOrder = "ASC")
-    {
-        $report = $this->build($sortOrder);
-        $this->formatter->format($report, $sortOrder);
     }
 
     private function setSortStrategy(SortStrategyInterface $sortStrategy)

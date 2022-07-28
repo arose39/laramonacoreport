@@ -33,7 +33,7 @@ class LogParser
     private function getDataFromFiles(string $path): array
     {
         if (!file_exists($path)) {
-            throw new InvalidArgumentException("$path file is not exist");
+            throw new \InvalidArgumentException("$path file is not exist");
         }
         $fp = fopen($path, 'r');
         $data = [];

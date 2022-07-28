@@ -16,20 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Route::get('/report', [ReportController::class, 'show']);
 
 Route::get('/report/racers', [RacerInfoController::class, 'showAll']);
 
-Route::get('/report/racers/id={id}', [RacerInfoController::class, 'showOne'])
-    ->where('id','[a-zA-Z]{3}');
-
-
+Route::get('/report/racers/id={abbreviation}', [RacerInfoController::class, 'showOne'])
+    ->where('abbreviation', '[a-zA-Z]{3}');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
