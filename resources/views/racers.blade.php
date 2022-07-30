@@ -22,7 +22,7 @@
                 <li>
                     <div class="alert alert-warning">
                         <h3>{{$racerInfo['name']}} --
-                            <a href="/report/racers/id={{$racerInfo['abbreviation']}}">
+                            <a href="{{route('racer',['abbreviation'=>$racerInfo['abbreviation']])}}">
                                 {{$racerInfo['abbreviation']}}
                             </a>
                         </h3>

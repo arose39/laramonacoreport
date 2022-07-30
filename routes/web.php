@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\RacerInfoController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
@@ -19,16 +21,19 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/report', [ReportController::class, 'show']);
+Route::get('/report', [ReportController::class, 'show'])->name('report');
 
-Route::get('/report/racers', [RacerInfoController::class, 'showAll']);
+Route::get('/report/racers', [RacerInfoController::class, 'showAll'])->name('racers');
 
-Route::get('/report/racers/id={abbreviation}', [RacerInfoController::class, 'showOne'])
+Route::get('/report/racers/id={abbreviation}', [RacerInfoController::class, 'showOne'])->name('racer')
     ->where('abbreviation', '[a-zA-Z]{3}');
 
-Route::get('/adminpannel', function () {
-    return view('Admin/admin');
-})->middleware(['admin']);
+Route::prefix('adminpannel')->middleware(['admin'])->group(function () {
+
+    Route::get('/', [AdminController::class, 'showPannel'])->middleware(['admin'])->name('adminpannel');
+
+    Route::resource('users', UserController::class);
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

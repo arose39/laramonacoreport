@@ -5,11 +5,11 @@
         <div class="col-md-6  mx-auto my-5">
             <h1 class="display-4 font-weight-normal">Отчет о квалификации</h1>
 
-            <a class="btn btn-outline-secondary" href="/report">Посмотреть</a>
+            <a class="btn btn-outline-secondary" href="{{route('report')}}">Посмотреть</a>
         </div>
         <div class="col-md-6  mx-auto my-5">
             <h1 class="display-4 font-weight-normal">Список гонщиков</h1>
-            <a class="btn btn-outline-secondary" href="/report/racers">Посмотреть</a>
+            <a class="btn btn-outline-secondary" href="{{route('racers')}}">Посмотреть</a>
         </div>
     </div>
 @endsection

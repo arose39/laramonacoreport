@@ -8,6 +8,7 @@ class Racer
     private string $name;
     private string $team;
     private LapTime $lapTime;
+    private const READY_LAP_TIME_LENGHT = 11;
 
     public function __construct(string $abbreviation, string $name, string $team, LapTime $lapTime)
     {
@@ -35,11 +36,10 @@ class Racer
     public function getLapTime(): string
     {
         // Подготавливаем правильный вид для отчета
-        $readyLapTimeLength = 11;
         $readyLapTime = substr($this->lapTime->getLapTime(), 1);
 
         //Добавляєм тройную точность милисекунд.
-        if (strlen($readyLapTime) < $readyLapTimeLength) {
+        if (strlen($readyLapTime) < $this::READY_LAP_TIME_LENGHT) {
             $readyLapTime = $readyLapTime . "0";
         }
 

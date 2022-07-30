@@ -8,4 +8,10 @@
 Для предоставления прав администратора использовать команду
 - sail artisan assign:admin <youruseremail@email.com>
 
+Для наполнения базі данніх пользователями пропишите:
+  - sail artisan db:seed --class=UserSeeder
+
+
 Можно переходить в админ панель через кнопку  в личном кабинете пользователя(localhost/dashboard) или по url localhost/adminpannel
+
+
