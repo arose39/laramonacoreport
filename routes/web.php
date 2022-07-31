@@ -29,9 +29,7 @@ Route::get('/report/racers/id={abbreviation}', [RacerInfoController::class, 'sho
     ->where('abbreviation', '[a-zA-Z]{3}');
 
 Route::prefix('adminpannel')->middleware(['admin'])->group(function () {
-
     Route::get('/', [AdminController::class, 'showPannel'])->middleware(['admin'])->name('adminpannel');
-
     Route::resource('users', UserController::class);
 });
 
