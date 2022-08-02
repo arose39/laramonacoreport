@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Lib\RacerInfoBuilderFacade;
 use App\Lib\ReportBuilderFacade;
+use App\Lib\SortOrder;
 use Illuminate\Http\Request;
+use \Illuminate\View\View;
 
 class RacerInfoController extends Controller
 {
-    public function showAll(Request $request)
+    public function showAll(Request $request): View
     {
-        if ($request->query('sort_order') === "desc") {
-            $sortOrder = "DESC";
-        } else {
-            $sortOrder = "ASC";
-        }
+        $sortOrderQuery = $request->sort_order ?? "asc";
+        $sortOrder = SortOrder::$sortOrderQuery()->getValue();
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder);
@@ -22,7 +21,7 @@ class RacerInfoController extends Controller
         return view('racers', ['report' => $report, 'sortOrder' => $sortOrder]);
     }
 
-    public function showOne(string $abbreviation)
+    public function showOne(string $abbreviation): View
     {
         $abbreviation = strtoupper($abbreviation);
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";

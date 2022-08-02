@@ -1,30 +1,37 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use App\Repositories\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+    private UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-        $users = User::orderBy('name')->get();
+        $users = $this->userRepository->all();
         return view('admin/users/index', ['users' => $users]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -37,42 +44,23 @@ class UserController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserCreateRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', Rules\Password::defaults()],
-        ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $user = $this->userRepository->create($request->name, $request->email, $request->password);
         if ($user) {
-            return redirect()->back()->withSuccess('User was successfully added');
+            return redirect()->back()->withSuccess("User $user->name was successfully added");
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
-    public function edit(User $user)
+    public function edit(string $userId)
     {
+        $user = $this->userRepository->getById($userId);
         return view('admin/users/edit', ['user' => $user]);
     }
 
@@ -83,16 +71,11 @@ class UserController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, string $userId)
     {
-        $updatedUser = $user;
-        $updatedUser->name = $request->name;
-        $updatedUser->email = $request->email;
-        if (!$request->password == '') {
-            $updatedUser->password = Hash::make($request->password);
-        }
-        if ($updatedUser->save()) {
-            return redirect()->route('users.index')->withSuccess('User was updates');
+        $updatedUser = $this->userRepository->update($userId, $request->name, $request->email, $request->password);
+        if ($updatedUser) {
+            return redirect()->route('users.index')->withSuccess("User $updatedUser->name was updates");
         }
     }
 
@@ -102,11 +85,10 @@ class UserController extends Controller
      * @param \App\Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(string $userId)
     {
-        $userName = $user->name;
-        if ($user->delete()) {
-            return redirect()->route('users.index')->withSuccess("User $userName was deleted");
+        if ($this->userRepository->delete($userId)) {
+            return redirect()->route('users.index')->withSuccess("User was deleted");
         }
     }
 }

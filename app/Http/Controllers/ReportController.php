@@ -3,17 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Lib\ReportBuilderFacade;
+use App\Lib\SortOrder;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
     public function show(Request $request)
     {
-        if ($request->query('sort_order') === "desc") {
-            $sortOrder = "DESC";
-        } else {
-            $sortOrder = "ASC";
-        }
+        $sortOrderQuery = $request->sort_order ?? "asc";
+        $sortOrder = SortOrder::$sortOrderQuery()->getValue();
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder);

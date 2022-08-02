@@ -30,7 +30,7 @@ Route::get('/report/racers/id={abbreviation}', [RacerInfoController::class, 'sho
 
 Route::prefix('adminpannel')->middleware(['admin'])->group(function () {
     Route::get('/', [AdminController::class, 'showPannel'])->middleware(['admin'])->name('adminpannel');
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except(['show']);
 });
 
 Route::get('/dashboard', function () {

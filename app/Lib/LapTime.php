@@ -38,7 +38,7 @@ class LapTime
         $finish = DateTime::createFromFormat('Y-m-d_H:i:s.u', $endDateTime);
         $startTimestamp = $start->getTimestamp() . '.' . $start->format('u');
         $finishTimestamp = $finish->getTimestamp() . '.' . $finish->format('u');
-        $resultTimestamp = round((float)($finishTimestamp - $startTimestamp), 3);
+        $resultTimestamp = round((float) ($finishTimestamp - $startTimestamp), 3);
         [$RoughTime, $milliseconds] = explode(".", "$resultTimestamp");
         $timeResult = gmdate("H:i:s", (int)$RoughTime) . '.' . $milliseconds;
 
