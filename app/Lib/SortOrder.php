@@ -4,8 +4,8 @@ namespace App\Lib;
 
 class SortOrder
 {
-    const ASC = 'ASC';
-    const DESC = 'DESC';
+    private const ASC = 'ASC';
+    private const DESC = 'DESC';
 
     private string $value;
 

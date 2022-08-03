@@ -1,25 +1,30 @@
 <?php declare(strict_types=1);
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\RacerInfoResource;
+use App\Http\Resources\RacerListCollection;
 use App\Lib\RacerInfoBuilderFacade;
 use App\Lib\ReportBuilderFacade;
 use App\Lib\SortOrder;
 use Illuminate\Http\Request;
-use \Illuminate\View\View;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\View\View;
 
 class RacerInfoController extends Controller
 {
-    public function showAll(SortOrder $sortOrder): View
+    public function showAll(SortOrder $sortOrder): RacerListCollection
     {
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder->getValue());
 
-        return view('racers', ['report' => $report, 'sortOrder' => $sortOrder->getValue()]);
+        return new RacerListCollection($report);
     }
 
-    public function showOne(string $abbreviation): View
+    public function showOne(string $abbreviation): RacerInfoResource
     {
         $abbreviation = strtoupper($abbreviation);
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
@@ -29,6 +34,6 @@ class RacerInfoController extends Controller
             abort(404);
         }
 
-        return view('racer', ['racerInfo' => $racerInfo]);
+        return new RacerInfoResource($racerInfo);
     }
 }

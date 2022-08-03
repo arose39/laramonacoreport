@@ -21,5 +21,10 @@
 
 П.С. Не стал делать отдельный env.test файл, с фековой базой данных и тд, так как в данном случае это будет излишним.
 
-
-
+API: 
+GET method
+http://localhost/api/v1/report
+http://localhost/api/v1/report?sort_order=desc
+http://localhost/api/v1/report/racers
+http://localhost/api/v1/report/racers?sort_order=desc
+http://localhost/api/v1/report/racers/id=EOF
