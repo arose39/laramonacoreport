@@ -10,15 +10,14 @@ use \Illuminate\View\View;
 
 class RacerInfoController extends Controller
 {
-    public function showAll(Request $request): View
+    public function showAll(SortOrder $sortOrder): View
     {
-        $sortOrderQuery = $request->sort_order ?? "asc";
-        $sortOrder = SortOrder::$sortOrderQuery()->getValue();
+        $sortOrderValue = $sortOrder->getValue();
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
-        $report = $reportBuilder->build($resourcesDirectory, $sortOrder);
+        $report = $reportBuilder->build($resourcesDirectory, $sortOrderValue);
 
-        return view('racers', ['report' => $report, 'sortOrder' => $sortOrder]);
+        return view('racers', ['report' => $report, 'sortOrder' => $sortOrderValue]);
     }
 
     public function showOne(string $abbreviation): View

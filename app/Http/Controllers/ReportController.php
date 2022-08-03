@@ -8,14 +8,13 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function show(Request $request)
+    public function show(SortOrder $sortOrder)
     {
-        $sortOrderQuery = $request->sort_order ?? "asc";
-        $sortOrder = SortOrder::$sortOrderQuery()->getValue();
+        $sortOrderValue = $sortOrder->getValue();
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
-        $report = $reportBuilder->build($resourcesDirectory, $sortOrder);
+        $report = $reportBuilder->build($resourcesDirectory, $sortOrderValue);
 
-        return view('report', ['report' => $report, 'sortOrder' => $sortOrder]);
+        return view('report', ['report' => $report, 'sortOrder' => $sortOrderValue]);
     }
 }
