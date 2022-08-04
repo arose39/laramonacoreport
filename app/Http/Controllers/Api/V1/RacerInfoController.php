@@ -21,7 +21,7 @@ class RacerInfoController extends Controller
 {
     public function showAll(SortOrder $sortOrder, ConverterInterface $format): JsonResponse|string
     {
-        $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
+        $resourcesDirectory = __DIR__ . "/../../../../../storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder->getValue());
         $racersListTranslator = new RacersListTranslator();
@@ -33,7 +33,7 @@ class RacerInfoController extends Controller
     public function showOne(string $abbreviation, ConverterInterface $format): JsonResponse|string
     {
         $abbreviation = strtoupper($abbreviation);
-        $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
+        $resourcesDirectory = __DIR__ . "/../../../../../storage/resources";
         $racerInfoBuilder = new RacerInfoBuilderFacade();
         $racerInfo = $racerInfoBuilder->build($resourcesDirectory, $abbreviation);
         if (empty($racerInfo)) {

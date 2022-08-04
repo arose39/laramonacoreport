@@ -19,7 +19,7 @@ class ReportController extends Controller
 
     public function show(SortOrder $sortOrder, ConverterInterface $format): JsonResponse|string
     {
-        $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
+        $resourcesDirectory = __DIR__ . "/../../../../../storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder->getValue());
         $reportTranslator = new ReportTranslator();
