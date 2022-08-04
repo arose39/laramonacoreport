@@ -37,4 +37,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/api/v1/documentation', function (){
+    return view('documentation');
+});
+
 require __DIR__ . '/auth.php';

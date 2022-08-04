@@ -21,6 +21,11 @@
 
 П.С. Не стал делать отдельный env.test файл, с фековой базой данных и тд, так как в данном случае это будет излишним.
 
+API документация по адресу:
+ - http://localhost/api/v1/documentation
+
+Или можно открыть api.yml файл в папке public/docs/openapi
+
 API: попробуйте следующие адреса в Postman через GET method
  - http://localhost/api/v1/report
 - http://localhost/api/v1/report?format=json
