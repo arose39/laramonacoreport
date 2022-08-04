@@ -12,10 +12,6 @@ use App\Lib\RacerInfoBuilderFacade;
 use App\Lib\ReportBuilderFacade;
 use App\Lib\SortOrder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
-use Illuminate\View\View;
 
 class RacerInfoController extends Controller
 {

@@ -9,14 +9,9 @@ use App\Lib\Api\V1\Translators\ReportTranslator;
 use App\Lib\ReportBuilderFacade;
 use App\Lib\SortOrder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Spatie\ArrayToXml\ArrayToXml;
-
 
 class ReportController extends Controller
 {
-    public static $wrap = 'report';
-
     public function show(SortOrder $sortOrder, ConverterInterface $format): JsonResponse|string
     {
         $resourcesDirectory = __DIR__ . "/../../../../../storage/resources";
