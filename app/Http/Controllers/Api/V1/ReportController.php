@@ -4,19 +4,27 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReportCollection;
+use App\Lib\Api\V1\Converters\ConverterInterface;
+use App\Lib\Api\V1\Translators\ReportTranslator;
 use App\Lib\ReportBuilderFacade;
 use App\Lib\SortOrder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Spatie\ArrayToXml\ArrayToXml;
+
 
 class ReportController extends Controller
 {
-    public function show(SortOrder $sortOrder): ReportCollection
+    public static $wrap = 'report';
+
+    public function show(SortOrder $sortOrder, ConverterInterface $format): JsonResponse|string
     {
         $resourcesDirectory = dirname($_SERVER['DOCUMENT_ROOT']) . "/storage/resources";
         $reportBuilder = new ReportBuilderFacade();
         $report = $reportBuilder->build($resourcesDirectory, $sortOrder->getValue());
+        $reportTranslator = new ReportTranslator();
+        $translatedReport = $reportTranslator->translate($report);
 
-        return $report;
-       // return new ReportCollection($report);
+        return $format->convert($translatedReport);
     }
 }
