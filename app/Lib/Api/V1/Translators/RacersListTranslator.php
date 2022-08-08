@@ -9,14 +9,14 @@ class RacersListTranslator implements TranslatorInterface
      */
     public function translate(array $array): array
     {
-        $i = 0;
         $racerList = [];
         foreach ($array as $reportItem) {
-            $racerList[$i]['name'] = $reportItem['name'];
-            $racerList[$i]['abbreviation'] = $reportItem['abbreviation'];
-            $racerList[$i]['uri'] = "/api/v1/report/racers/id=" . $reportItem['abbreviation'];
-            $racerList[$i]['team'] = $reportItem['team'];
-            $i++;
+            $racerList[] = [
+                'name' => $reportItem['name'],
+                'abbreviation' => $reportItem['abbreviation'],
+                'uri' => "/api/v1/report/racers/id=" . $reportItem['abbreviation'],
+                'team' => $reportItem['team']
+            ];
         }
 
         return $racerList;

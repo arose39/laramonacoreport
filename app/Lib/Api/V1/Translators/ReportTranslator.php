@@ -4,7 +4,6 @@ namespace App\Lib\Api\V1\Translators;
 
 class ReportTranslator implements TranslatorInterface
 {
-
     /**
      * Getted as param builded by ReportBuilderFacade report
      */
